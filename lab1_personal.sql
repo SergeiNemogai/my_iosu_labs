@@ -1,0 +1,51 @@
+CREATE TABLE Suppliers (
+	mcode INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	title VARCHAR2(30) NOT NULL UNIQUE,
+	city VARCHAR2(20) NOT NULL,
+	tnumber VARCHAR2(15) NOT NULL UNIQUE);
+
+CREATE TABLE Classification (
+	 towork VARCHAR2(20) PRIMARY KEY);
+
+CREATE TABLE Clients(
+	pnumber VARCHAR2(30) PRIMARY KEY,
+	fname VARCHAR2(20) NOT NULL,
+	lname VARCHAR2(20) NOT NULL,
+	tnumber VARCHAR2(15) NOT NULL UNIQUE);
+    
+CREATE TABLE Technics (
+	snumber INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	title VARCHAR2(20) NOT NULL UNIQUE,
+	towork VARCHAR2(20),
+	mcode INTEGER,
+	ready CHAR(1) CHECK (ready IN('y','n')),
+	rdate DATE NOT NULL,
+	CONSTRAINT towork_reference_classification FOREIGN KEY (towork) REFERENCES Classification ON DELETE CASCADE,
+    CONSTRAINT mcode_reference_suppliers FOREIGN KEY (mcode) REFERENCES Suppliers ON DELETE CASCADE);
+
+CREATE TABLE Works (
+	wcode INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	wname VARCHAR2(20) NOT NULL UNIQUE,
+	towork VARCHAR2(20),
+	CONSTRAINT towork_reference_works FOREIGN KEY (towork) REFERENCES Classification ON DELETE CASCADE);
+    
+CREATE TABLE Provision (
+	pcode INTEGER  GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	wcode INTEGER,
+	pnumber VARCHAR2(30),
+	snumber INTEGER,
+    rdate DATE NOT NULL,
+	CONSTRAINT wcode_reference_provision FOREIGN KEY (wcode) REFERENCES Works ON DELETE CASCADE,
+	CONSTRAINT pnumber_reference_provision FOREIGN KEY (pnumber) REFERENCES Clients ON DELETE CASCADE,
+	CONSTRAINT snumber_reference_provision FOREIGN KEY (snumber) REFERENCES Technics ON DELETE CASCADE);
+
+-- short table names using synonyms
+CREATE PUBLIC SYNONYM sup FOR Suppliers;    
+CREATE PUBLIC SYNONYM cls FOR Classification;
+CREATE PUBLIC SYNONYM clt FOR Clients;
+CREATE PUBLIC SYNONYM tch FOR Technics;
+CREATE PUBLIC SYNONYM wrk FOR Works;
+CREATE PUBLIC SYNONYM prv FOR Provision;
+
+-- index for future request
+CREATE INDEX rdy ON Technics(ready);
