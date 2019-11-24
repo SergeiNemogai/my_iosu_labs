@@ -12,7 +12,7 @@ CREATE TABLE Staff (
 	lname VARCHAR2(20) NOT NULL,
 	adress VARCHAR2(35) NOT NULL,
 	tel_no VARCHAR2(15) NOT NULL UNIQUE,
-	position VARCHAR2(20) NOT NULL,
+	position VARCHAR2(40) NOT NULL,
 	sex VARCHAR2(6) CHECK (sex IN ('male','female')),
 	dob DATE NOT NULL,
 	salary INTEGER NOT NULL,
@@ -383,14 +383,14 @@ insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('80
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('33 Susan Street', 'Madaba', 'f', 9, 99710, 62, 38, 19);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('41 Veith Court', 'Ruoqiang', 'f', 10, 24012, 86, 17, 2);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('58189 Pleasure Crossing', 'Timrat', 'h', 1, 22662, 91, 92, 68);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('219 Ramsey Avenue', 'Ni’ao', 'f', 6, 6068, 24, 3, 15);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('219 Ramsey Avenue', 'NiÂ’ao', 'f', 6, 6068, 24, 3, 15);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('47 Welch Court', 'Santa Cruz del Quiche', 'f', 9, 11225, 14, 16, 52);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('58 Fordem Way', 'Hats’avan', 'f', 1, 69228, 19, 46, 100);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('58 Fordem Way', 'HatsÂ’avan', 'f', 1, 69228, 19, 46, 100);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('7757 Fulton Terrace', 'Nicosia', 'f', 1, 30200, 32, 19, 12);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('8 Crest Line Court', 'Trikeri', 'h', 9, 77202, 93, 37, 13);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('0 Jay Avenue', 'Konstantynow', 'f', 9, 34856, 12, 95, 48);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('4631 Mockingbird Pass', 'Dancheng', 'f', 9, 55686, 99, 2, 19);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('5 Vermont Plaza', 'Yirga ‘Alem', 'h', 3, 73744, 21, 38, 7);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('5 Vermont Plaza', 'Yirga Â‘Alem', 'h', 3, 73744, 21, 38, 7);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('1 Westend Way', 'Taby', 'h', 2, 98104, 99, 97, 90);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('10625 Del Mar Park', 'Guanajuato', 'f', 1, 28429, 62, 25, 52);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('53 Russell Pass', 'Orebro', 'h', 8, 58615, 33, 92, 84);
@@ -443,7 +443,7 @@ insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('60
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('59 Scott Crossing', 'Hukvaldy', 'h', 5, 29923, 10, 11, 39);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('38 Armistice Hill', 'Fukuroi', 'h', 7, 91274, 6, 88, 55);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('48 Lunder Plaza', 'Jelcz', 'h', 6, 13457, 80, 84, 37);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('19 Moulton Terrace', 'Rossosh’', 'h', 2, 60888, 99, 86, 74);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('19 Moulton Terrace', 'RossoshÂ’', 'h', 2, 60888, 99, 86, 74);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('48551 Dexter Alley', 'Bor', 'h', 5, 83391, 13, 31, 14);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('0 Katie Avenue', 'Sousa', 'h', 1, 49610, 20, 5, 61);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('2002 Lakeland Lane', 'Matamey', 'h', 9, 46129, 69, 95, 51);
@@ -471,7 +471,7 @@ insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('78
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('82206 Beilfuss Place', 'Kavadarci', 'h', 1, 46025, 17, 42, 33);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('7315 Rutledge Plaza', 'Liupai', 'h', 1, 69751, 57, 75, 65);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('462 Crest Line Point', 'Aioi', 'h', 3, 65195, 99, 9, 53);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('08897 Petterle Plaza', 'E’zhou', 'h', 6, 55174, 29, 54, 3);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('08897 Petterle Plaza', 'EÂ’zhou', 'h', 6, 55174, 29, 54, 3);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('14826 Macpherson Street', 'Laingsburg', 'h', 4, 28397, 15, 91, 93);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('210 Hayes Street', 'Zolotyy Potik', 'h', 7, 96004, 29, 7, 9);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('081 Northridge Junction', 'Nor Yerznka', 'h', 1, 47790, 94, 3, 78);
