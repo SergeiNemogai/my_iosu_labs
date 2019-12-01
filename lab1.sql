@@ -2,15 +2,15 @@ CONNECT AS SYSDBA
 
 CREATE TABLE Branch (
 	bno INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	street VARCHAR2(30) NOT NULL,
+	street VARCHAR2(50) NOT NULL,
 	city VARCHAR2(30) NOT NULL,
 	tel_no VARCHAR2(15) NOT NULL UNIQUE);
 	
 CREATE TABLE Staff (
 	sno INTEGER  GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	fname VARCHAR2(20) NOT NULL,
-	lname VARCHAR2(20) NOT NULL,
-	adress VARCHAR2(35) NOT NULL,
+	fname VARCHAR2(30) NOT NULL,
+	lname VARCHAR2(30) NOT NULL,
+	adress VARCHAR2(50) NOT NULL,
 	tel_no VARCHAR2(15) NOT NULL UNIQUE,
 	position VARCHAR2(40) NOT NULL,
 	sex VARCHAR2(6) CHECK (sex IN ('male','female')),
@@ -22,14 +22,14 @@ CREATE TABLE Staff (
 
 CREATE TABLE Owner(
 	ono INTEGER NOT NULL PRIMARY KEY,
-	fname VARCHAR2(20) NOT NULL,
-	lname VARCHAR2(20) NOT NULL,
-	adress VARCHAR2(30) NOT NULL,
+	fname VARCHAR2(30) NOT NULL,
+	lname VARCHAR2(30) NOT NULL,
+	adress VARCHAR2(50) NOT NULL,
 	tel_no VARCHAR2(15) NOT NULL);
 
 CREATE TABLE Property_for_rent (
 	pno INTEGER  GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	street VARCHAR2(30) NOT NULL,
+	street VARCHAR2(50) NOT NULL,
 	city VARCHAR2(30) NOT NULL,
 	type CHAR(1) CHECK (type IN('h','f')),
     rooms INTEGER NOT NULL,
@@ -43,9 +43,9 @@ CREATE TABLE Property_for_rent (
 
 CREATE TABLE Renter(
 	rno INTEGER  GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	fname VARCHAR2(20) NOT NULL,
-	lname VARCHAR2(20) NOT NULL,
-	adress VARCHAR2(30) NOT NULL,
+	fname VARCHAR2(30) NOT NULL,
+	lname VARCHAR2(30) NOT NULL,
+	adress VARCHAR2(50) NOT NULL,
     tel_no VARCHAR2(15) NOT NULL,
     pref_type CHAR(1) CHECK (pref_type IN('h','f')),
 	max_rent INTEGER NOT NULL,
@@ -398,7 +398,7 @@ insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('12
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('8230 Badeau Court', 'Marmashen', 'h', 10, 84239, 40, 74, 76);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('07 Artisan Trail', 'Tyshkivka', 'h', 9, 19090, 68, 21, 56);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('1920 Corben Pass', 'Nizhnyaya Salda', 'f', 3, 43854, 75, 15, 19);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('54 Drewry Park', 'Barubandung', 'h', 8, 74835, 25, 0, 96);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('54 Drewry Park', 'Barubandung', 'h', 8, 74835, 25, 1, 96);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('08523 Scofield Point', 'Badou', 'f', 4, 71291, 76, 64, 30);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('9 Waywood Terrace', 'San Pedro', 'f', 5, 64257, 45, 69, 87);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('175 Heffernan Street', 'Pantenan', 'f', 8, 39185, 74, 30, 82);
@@ -436,7 +436,7 @@ insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('41
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('6089 Talmadge Plaza', 'Shuitianzhuang', 'h', 9, 47561, 32, 73, 20);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('054 Esch Crossing', 'Ariguani', 'h', 9, 30291, 48, 71, 61);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('5 Maywood Alley', 'Ar Rahad', 'h', 4, 91088, 4, 88, 86);
-insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('31759 Gateway Center', 'Caen', 'h', 7, 24479, 84, 0, 18);
+insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('31759 Gateway Center', 'Caen', 'h', 7, 24479, 84, 3, 18);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('690 Fisk Road', 'Tazemmourt', 'h', 9, 72528, 24, 70, 38);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('659 Lotheville Alley', 'Shenglilu', 'h', 10, 42259, 79, 35, 75);
 insert into objects (street, city, type, rooms, rent, bno, sno, ono) values ('60 Lighthouse Bay Terrace', 'Pirassununga', 'h', 5, 94399, 41, 69, 98);
