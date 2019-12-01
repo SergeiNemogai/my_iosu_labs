@@ -36,24 +36,8 @@ ORDER BY 3;
 
 SELECT B.*
 FROM Branch B
-WHERE B.bno IN (1, 2, 3);
-
--- количество женщин по отделениям
-SELECT bno, COUNT(sex) AS female
+WHERE B.bno IN (SELECT bno
 FROM Staff
-GROUP BY bno, sex
-HAVING sex = 'female'
-ORDER BY 1;
-
--- количество мужчин по отделениям
-SELECT bno, COUNT(sex) AS male
-FROM Staff
-GROUP BY bno, sex
-HAVING sex ='male'
-ORDER BY 1;
-
--- Итоговый запрос, который выводит индексы отделений и количество сотрудников по гендерному признаку
-SELECT bno, sex, COUNT(sex) AS numof
-FROM Staff
-GROUP BY bno, sex
+GROUP BY bno
+HAVING SUM(CASE sex WHEN 'female' THEN 1 ELSE -1 END) > 0)
 ORDER BY 1;
