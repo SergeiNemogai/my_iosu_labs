@@ -41,3 +41,10 @@ FROM Staff
 GROUP BY bno
 HAVING SUM(CASE sex WHEN 'female' THEN 1 ELSE -1 END) > 0)
 ORDER BY 1;
+
+-- Обновить одной командой информацию о максимальной рентной
+-- стоимости объектов, уменьшив стоимость квартир на 5 %, а стоимость домов
+-- увеличив на 7 %.
+
+UPDATE Renter
+SET max_rent = CASE pref_type WHEN 'h' THEN max_rent*1.07 ELSE max_rent*0.95 END;
