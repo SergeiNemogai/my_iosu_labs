@@ -5,12 +5,15 @@ SELECT *
 FROM Branch 
 WHERE city = 'Brest';
 
--- Информация об объектах недвижимости минимальной стоимости (топ-5)
+-- Информация об объектах недвижимости минимальной стоимости
+-- Сначала определяется минимальная стоимость, а затем выводятся объекты,
+-- у которых стоимость равна найденной минимальной
 
 CREATE OR REPLACE VIEW Min_rent AS
 SELECT *
-FROM (SELECT * FROM objects ORDER BY rent)
-WHERE rownum < 6;
+FROM objects
+WHERE rent = (SELECT MIN(rent) 
+FROM objects);
 
 -- Информациея о количестве сделанных осмотров с комментариями
 
@@ -30,7 +33,7 @@ SELECT R.*, city
 FROM Renter R
 INNER JOIN Viewing V ON R.rno = V.rno
 INNER JOIN Objects O ON V.pno = O.pno
-WHERE O.rooms = 3 AND O.city = SUBSTR(R.adress, 1, INSTR(R.adress, ',') - 1);
+WHERE O.rooms = 3 AND O.type = 'f' AND O.city = SUBSTR(R.adress, 1, INSTR(R.adress, ',') - 1);
 
 -- Сведения об отделении с максимальным количеством
 -- работающих сотрудников
@@ -38,19 +41,20 @@ WHERE O.rooms = 3 AND O.city = SUBSTR(R.adress, 1, INSTR(R.adress, ',') - 1);
 CREATE OR REPLACE VIEW MaxStaff AS
 SELECT *
 FROM Branch
-WHERE bno IN (SELECT bno
-FROM (SELECT B.bno, COUNT(sno)
+WHERE bno IN (SELECT B.bno
 FROM Branch B
 INNER JOIN Staff S ON B.bno = S.bno
 GROUP BY B.bno
-ORDER BY 2 DESC)
-WHERE rownum = 1);
+HAVING COUNT(sno) >= ALL(SELECT COUNT(sno) AS numbers
+FROM Branch B
+INNER JOIN Staff S ON B.bno = S.bno
+GROUP BY B.bno))
 
 -- Информация о сотрудниках и объектах, которые они предлагают в
 -- аренду в текущем квартале (НЕ СКАЗАНО, ЧТО ИМЕННО В ЭТОМ ГОДУ!!!)
 
 CREATE OR REPLACE VIEW Staff_objects AS
-SELECT S.*, O.*, V.date_o
+SELECT DISTINCT S.*, O.*, V.date_o
 FROM Staff S
 INNER JOIN Objects O ON S.sno = O.sno
 INNER JOIN Viewing V ON O.pno = V.pno
