@@ -18,7 +18,7 @@ WHERE S.sno = P.sno AND P.rooms = 3;
 SELECT DISTINCT S.*, P.rooms
 FROM Staff S
 INNER JOIN Property_for_rent P ON S.sno = P.sno
-WHERE P.rooms = 3;
+WHERE P.rooms = 3 AND P.type = 'f';
  
 
 -- Вывести итоговый отчет о средней и суммарной заработной плате
@@ -32,7 +32,6 @@ ORDER BY 3;
 
 -- Вывести информацию об отделениях, где работает больше женщин, чем
 -- мужчин, учитывая, что в отделениях могут быть сотрудники одного пола.
--- Перебровал все варианты и ничего не работает.
 
 SELECT B.*
 FROM Branch B
