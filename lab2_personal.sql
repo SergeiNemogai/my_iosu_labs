@@ -24,27 +24,26 @@ FROM Works
 WHERE wname = &wname;
 
 -- Запрос на объединение
--- Вывести список клиентов с фамилией на "A" или именем на "D"
-
-SELECT *
-FROM Clients
-WHERE lname LIKE 'A%'
-UNION
-SELECT *
-FROM Clients
-WHERE fname LIKE 'D%';
-
--- Условный запрос по типу поля дата
--- Вывести информацию о клиентах, производивших заказы в 2017 году
-
-SELECT C.*, P.rdate
+-- Общий список клиентов с количеством заказов и техники с количеством предоставлений
+SELECT C.pnumber, COUNT(P.pnumber)
 FROM Clients C
 INNER JOIN Provision P ON C.pnumber = P.pnumber
-WHERE TO_CHAR(P.rdate, 'YYYY') = 2017;
+GROUP BY C.pnumber
+UNION
+SELECT T.title, COUNT(P.snumber)
+FROM Technics T
+INNER JOIN Provision P ON T.snumber = P.snumber
+GROUP BY T.title;
+
+-- Условный запрос по типу поля дата
+-- Количество заказов по годам
+
+SELECT EXTRACT(YEAR FROM rdate) AS "Год", COUNT(*) AS "Количество"
+FROM Provision 
+GROUP BY EXTRACT(YEAR FROM rdate);
 
 -- Внутреннее соединение таблиц (JOIN USING OR NATURAL JOIN)
--- Предыдущий запрос (у меня нет фантазии) с использованием USING
--- Как можно видеть, он даже немного короче
+-- Вывести информацию о клиентах, делавших заказы в 2017 году
 
 SELECT *
 FROM Clients 
