@@ -143,3 +143,83 @@ BEGIN
     VALUES (USER, 'LOGOFF', SYSDATE);
 END;
 /
+
+/*
+Написать триггеры, реализующие бизнес-логику (ограничения) в
+заданной вариантом предметной области. Три задания приведены в прил. 6.
+Количество и тип триггеров (строковый или операторный, выполняется AFTER
+или BEFORE) определять самостоятельно исходя из сути заданий и имеющейся
+схемы БД; учесть, что в некоторых вариантах первые два задания могут быть
+выполнены в рамках одного триггера, а также возможно возникновение
+мутации, что приведет к совмещению данного пункта лабораторной работы со
+следующим. Третий пункт задания предполагает использование планировщика
+задач, который обязательно должен быть настроен на многократный запуск с
+использованием частоты, интервала и спецификаторов.
+
+• Техника, находящаяся в ремонте, не может быть предоставлена.
+• Техника, не предназначенная для опр. вида работ, не может быть предоставлена.
+• Срок эксплуатации оборудования – не более 15 лет.
+*/ 
+
+-- 1) При предоставлении техники проверять, доступна ли она.
+-- 2) При предоставлении техники проверять, выполняет ли он указанный тип работ
+-- Указанные выше действия можно выполнить в одном триггере
+
+CREATE OR REPLACE TRIGGER BEFORE_INSERT_TRIGGER
+BEFORE INSERT OR UPDATE
+ON Provision
+FOR EACH ROW
+DECLARE
+TO_WORK_1 VARCHAR2(20);
+TO_WORK_2 VARCHAR2(20);
+READY_VAR CHAR(1);
+BEGIN
+    SELECT towork INTO TO_WORK_1 FROM Works WHERE wcode = :NEW.wcode;
+    SELECT towork INTO TO_WORK_2 FROM Technics WHERE snumber = :NEW.snumber;
+    SELECT ready INTO READY_VAR FROM Technics WHERE snumber = :NEW.snumber;
+    
+	IF TO_WORK_1 <> TO_WORK_2 THEN
+		RAISE_APPLICATION_ERROR(
+        num => -20000,
+        msg => 'ITS IMPOSSIBLE TO PROVIDE THE TECHNIC UNIT WHICH DOESNT MAKE REQURIED TYPE OF WORK');
+	END IF;
+    
+    IF READY_VAR = 'n' THEN
+		RAISE_APPLICATION_ERROR(
+        num => -20000,
+        msg => 'ITS IMPOSSIBLE TO PROVIDE THE TECHNIC UNIT WHICH IS NOT READY');
+	END IF;
+END;
+/
+
+-- Проверка условия 2)
+insert into Provision (wcode, pnumber, snumber, rdate) values (11, 'BZ3000481', 1, '09-Apr-2019');
+
+-- Изменение данных для дальнейшей проверки условия 1)
+UPDATE Technics SET ready = 'n' where snumber = 1;
+
+-- Проверяем условие 1)
+insert into Provision (wcode, pnumber, snumber, rdate) values (1, 'BZ3000481', 1, '09-Apr-2019');
+
+-- 3) Раз в год производить учёт техники и делать недоступными те единицы,
+-- у которых с момента производства прошло более 15 лет
+
+BEGIN
+DBMS_SCHEDULER.CREATE_JOB(
+JOB_NAME => 'update_technics_ready_once_a_year',
+JOB_TYPE => 'PLSQL_BLOCK',
+JOB_ACTION => 'UPDATE Technics SET ready=''n'' WHERE TO_CHAR(sysdate,''yyyy'') - TO_CHAR(rdate, ''yyyy'') >= 15;',
+START_DATE => '01-JAN-19 01.00.00 AM ',
+REPEAT_INTERVAL => 'FREQ=YEARLY; BYYEARDAY = 3',
+END_DATE => '01-JAN-50 12.00.00 AM ',
+COMMENTS => 'Update technics status once a year (3 jan at 12 am) ',
+ENABLED => TRUE);
+END;
+/
+
+/*
+Самостоятельно или при помощи преподавателя составить задание на
+триггер, который будет вызывать мутацию таблиц, и решить эту проблему
+одним из двух способов (при помощи переменных пакета и двух триггеров или
+при помощи COMPAUND-триггера).
+*/
