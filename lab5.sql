@@ -223,3 +223,41 @@ END;
 одним из двух способов (при помощи переменных пакета и двух триггеров или
 при помощи COMPAUND-триггера).
 */
+
+
+
+/*
+Написать триггер INSTEAD OF для работы с необновляемым
+представлением, созданным после выполнения п. 2 задания к лабораторной
+работе №3, проверить DML-командами возможность обновления
+представления до и после включения триггера.
+*/
+
+-- Собственно само представление
+
+CREATE OR REPLACE VIEW Provision_view AS
+SELECT wname, fname, lname, title, T.rdate AS Production_date
+FROM Provision P
+INNER JOIN Works W ON P.wcode = W.wcode
+INNER JOIN Clients C ON P.pnumber = C.pnumber
+INNER JOIN Technics T ON P.snumber = T.snumber;
+
+-- При попытке обновить данные, вызывается исключение:
+-- ORA-01779: cannot modify a column which maps to a non key-preserved table 
+
+UPDATE Provision_view SET Production_date = '22-Apr-2019';
+
+-- Триггер, исправляющий это
+
+CREATE OR REPLACE TRIGGER UPDATE_VIEW
+INSTEAD OF UPDATE ON Provision_view
+FOR EACH ROW
+BEGIN
+UPDATE Technics SET
+rdate = :NEW.Production_date;
+END;
+/
+
+-- Проверка работы триггера
+
+UPDATE Provision_view SET Production_date = '22-Apr-2019';
