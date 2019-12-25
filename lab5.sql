@@ -224,6 +224,44 @@ END;
 при помощи COMPAUND-триггера).
 */
 
+-- если техника недоступна, триггер предлагает другую технику (тот же тип работ)
+-- при этом, если с момента предоставления не прошло n дней, то изменять дату предоставления
+
+CREATE OR REPLACE TRIGGER PROVISION_CHECK_TRIGGER
+FOR INSERT ON Provision
+COMPOUND TRIGGER
+
+TO_WORK VARCHAR2(20);
+READY_STATUS CHAR(1);
+NEW_PCODE INTEGER := :NEW.pcode;
+NEW_SNUMBER INTEGER := :NEW.snumber;
+NEW_WCODE INTEGER := :NEW.wcode;
+NEW_PNUMBER VARCHAR2(30) := :NEW.pnumber;
+PROVISION_DATE DATE := :NEW.rdate;
+PROVISION_COUNT INTEGER;
+
+
+BEFORE EACH ROW IS
+BEGIN
+	SELECT ready INTO READY_STATUS FROM Technics WHERE snumber = NEW_SNUMBER;
+	IF READY_STATUS = 'n' THEN
+		SELECT towork INTO TO_WORK FROM Technics WHERE snumber = NEW_SNUMBER;
+        SELECT snumber INTO NEW_SNUMBER FROM Technics WHERE towork = TO_WORK AND ROWNUM = 1 AND snumber <> NEW_SNUMBER;
+        :NEW.snumber := NEW_SNUMBER;
+        DBMS_OUTPUT.PUT_LINE('REQURIED TECHIC UNIT IS NOT AVAILABLE. ' || NEW_SNUMBER || ' HAS BEEN PROVIDED');
+    END IF;
+END BEFORE EACH ROW;
+
+AFTER STATEMENT IS
+BEGIN
+	SELECT COUNT(1) INTO PROVISION_COUNT FROM Provision WHERE snumber = NEW_SNUMBER AND rdate BETWEEN PROVISION_DATE - 3 AND PROVISION_DATE;
+	IF PROVISION_COUNT > 1 THEN
+		UPDATE Provision SET rdate = PROVISION_DATE + 3 WHERE pcode = NEW_PCODE;
+	END IF;
+END AFTER STATEMENT;
+
+END;
+/
 
 
 /*
